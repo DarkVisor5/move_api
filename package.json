@@ -21,6 +21,7 @@
   "homepage": "https://github.com/DarkVisor5/move_api#readme",
   "dependencies": {
     "body-parser": "^1.20.2",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "morgan": "^1.10.0"
   }
 }
