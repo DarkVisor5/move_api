@@ -1,12 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie API Documentation</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie API Documentation</title>
+  <link rel="stylesheet" type="text/css" href="../Style/styles.css">
 </head>
 <body>
     <h1>Movie API</h1>
+    <h1>Movie API Documentation</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Request</th>
+        <th>URL</th>
+        <th>Response</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>GET</td>
+        <td>/movies</td>
+        <td>Returns a list of all movies</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/movies/:title</td>
+        <td>Returns a single movie by title</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/genres/:name</td>
+        <td>Returns a list of movies in the specified genre</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/directors/:name</td>
+        <td>Returns the director's information by name</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/users</td>
+        <td>Adds a new user</td>
+      </tr>
+      <tr>
+        <td>PUT</td>
+        <td>/users/:username</td>
+        <td>Updates a user's information</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/users/:username/favorites/:movieTitle</td>
+        <td>Adds a movie to the user's favorites</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/users/:username/favorites/:movieTitle</td>
+        <td>Removes a movie from the user's favorites</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/users/:email</td>
+        <td>Deletes a user by email</td>
+      </tr>
+    </tbody>
+  </table>
     <p>
         The myFlix application is a movie API designed for movie enthusiasts who want to access information about movies, 
         directors, and genres. The application will be hosted online and is responsive, so it can be used anywhere and on 
