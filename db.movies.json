@@ -1,0 +1,246 @@
+db.movies.insertMany(
+[
+  {
+    _id: ObjectId("64c0fe388f9ba65b3989f441"),
+    title: 'The Godfather',
+    description: 'The aging patriarch of an organized crime dynasty transfers control of his empire to his reluctant son.',
+    genre: [
+      {
+        name: 'Crime',
+        description: 'A genre that revolves around the actions of criminals or individuals involved in illicit activities.'
+      },
+      {
+        name: 'Drama',
+        description: 'A genre that focuses on realistic scenarios and emotionally-driven characters facing hardship and turmoil.'
+      }
+    ],
+    director: {
+      name: 'Francis Ford Coppola',
+      bio: 'American film director, producer, and screenwriter. He was a central figure in the New Hollywood filmmaking movement of the 1960s and 1970s.',
+      birth_year: 1939,
+      death_year: null
+    },
+    image_url: 'https://image.tmdb.org/t/p/original/d4KNaTrltq6bpkFS01pYtyXa09m.jpg',
+    featured: true
+  },
+  {
+    _id: ObjectId("64c0ff488f9ba65b3989f443"),
+    title: 'The Dark Knight',
+    description: 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.',
+    genre: [
+      {
+        name: 'Action',
+        description: 'A genre that often features physical exploits and a fast-paced plot.'
+      },
+      {
+        name: 'Crime',
+        description: 'A genre that revolves around the actions of criminals or individuals involved in illicit activities.'
+      },
+      {
+        name: 'Drama',
+        description: 'A genre that focuses on realistic scenarios and emotionally-driven characters facing hardship and turmoil.'
+      }
+    ],
+    director: {
+      name: 'Christopher Nolan',
+      bio: 'English filmmaker known for making personal, distinctive films within the Hollywood mainstream.',
+      birth_year: 1970,
+      death_year: null
+    },
+    image_url: 'https://image.tmdb.org/t/p/original/1hRoyzDtpgMU7Dz4JF22RANzQO7.jpg',
+    featured: false
+  },
+  {
+    _id: ObjectId("64c1006a8f9ba65b3989f446"),
+    title: 'Inception',
+    description: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.',
+    genre: [
+      {
+        name: 'Action',
+        description: 'A genre that often features physical exploits and a fast-paced plot.'
+      },
+      {
+        name: 'Adventure',
+        description: 'A genre characterized by an exciting undertaking involving risk and physical danger.'
+      },
+      {
+        name: 'Sci-Fi',
+        description: 'A genre that revolves around speculative scientific discoveries, advancements, or phenomena.'
+      }
+    ],
+    director: {
+      name: 'Christopher Nolan',
+      bio: 'English filmmaker known for making personal, distinctive films within the Hollywood mainstream.',
+      birth_year: 1970,
+      death_year: null
+    },
+    image_url: 'https://image.tmdb.org/t/p/original/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg',
+    featured: true
+  },
+  {
+    _id: ObjectId("64c1006a8f9ba65b3989f447"),
+    title: 'Fight Club',
+    description: 'An insomniac office worker and a devil-may-care soap maker form an underground fight club that evolves into something much, much more.',
+    genre: [
+      {
+        name: 'Drama',
+        description: 'A genre that focuses on realistic scenarios and emotionally-driven characters facing hardship and turmoil.'
+      }
+    ],
+    director: {
+      name: 'David Fincher',
+      bio: 'Known for his psychological thrillers, his films have received thirty nominations at the Academy Awards including two for him as Best Director.',
+      birth_year: 1962,
+      death_year: null
+    },
+    image_url: 'https://image.tmdb.org/t/p/original/4GpwvwDjgwiShr1UBJIn5fk1gwT.jpg',
+    featured: false
+  },
+  {
+    _id: ObjectId("64c100c58f9ba65b3989f448"),
+    title: 'Pulp Fiction',
+    description: "The lives of two mob hitmen, a boxer, a gangster's wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
+    genre: [
+      {
+        name: 'Crime',
+        description: 'A genre that revolves around the actions of criminals or individuals involved in illicit activities.'
+      },
+      {
+        name: 'Drama',
+        description: 'A genre that focuses on realistic scenarios and emotionally-driven characters facing hardship and turmoil.'
+      }
+    ],
+    director: {
+      name: 'Quentin Tarantino',
+      bio: 'American filmmaker and actor. His films are characterized by nonlinear storylines, aestheticization of violence, extended scenes of dialogue, ensemble casts, references to popular culture and a wide variety of other films, eclectic soundtracks primarily containing songs and score pieces from the 1960s to the 1980s, and features of neo-noir film.',
+      birth_year: 1963,
+      death_year: null
+    },
+    image_url: 'https://image.tmdb.org/t/p/original/dM2w364MScsjFf8pfMbaWUcWrR.jpg',
+    featured: false
+  },
+  {
+    _id: ObjectId("64c100c58f9ba65b3989f449"),
+    title: 'Forrest Gump',
+    description: 'The presidencies of Kennedy and Johnson, the Vietnam War, the Watergate scandal and other historical events unfold from the perspective of an Alabama man with an IQ of 75, whose only desire is to be reunited with his childhood sweetheart.',
+    genre: [
+      {
+        name: 'Drama',
+        description: 'A genre that focuses on realistic scenarios and emotionally-driven characters facing hardship and turmoil.'
+      },
+      {
+        name: 'Romance',
+        description: 'A genre that centers around the love relationship between characters.'
+      }
+    ],
+    director: {
+      name: 'Robert Zemeckis',
+      bio: 'American filmmaker and screenwriter frequently credited as an innovator in visual effects. He first came to public attention in the 1980s as the director of Romancing the Stone (1984) and the science-fiction comedy Back to the Future film trilogy, as well as the live-action/animated comedy Who Framed Roger Rabbit (1988).',
+      birth_year: 1951,
+      death_year: null
+    },
+    image_url: 'https://image.tmdb.org/t/p/original/clolk7rB5lAjs41SD0Vt6IXYLMm.jpg',
+    featured: false
+  },
+  {
+    _id: ObjectId("64c1014b8f9ba65b3989f450"),
+    title: 'The Shawshank Redemption',
+    description: 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
+    genre: [
+      {
+        name: 'Drama',
+        description: 'A genre that focuses on realistic scenarios and emotionally-driven characters facing hardship and turmoil.'
+      },
+      {
+        name: 'Crime',
+        description: 'A genre that revolves around the actions of criminals or individuals involved in illicit activities.'
+      }
+    ],
+    director: {
+      name: 'Frank Darabont',
+      bio: 'American director, screenwriter, and producer known for his directorial work on The Shawshank Redemption, The Green Mile, and The Mist.',
+      birth_year: 1959,
+      death_year: null
+    },
+    image_url: 'https://image.tmdb.org/t/p/original/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg',
+    featured: true
+  },
+  {
+    _id: ObjectId("64c1014b8f9ba65b3989f451"),
+    title: 'The Matrix',
+    description: 'A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.',
+    genre: [
+      {
+        name: 'Action',
+        description: 'A genre that often features physical exploits and a fast-paced plot.'
+      },
+      {
+        name: 'Sci-Fi',
+        description: 'A genre that revolves around speculative scientific discoveries, advancements, or phenomena.'
+      }
+    ],
+    director: {
+      name: 'Lana Wachowski',
+      bio: 'American filmmaker and screenwriter, known for co-creating The Matrix series with her sister Lilly. A trans woman, Lana has written, directed, and produced several series and films with Lilly, who is also a trans woman.',
+      birth_year: 1965,
+      death_year: null
+    },
+    image_url: 'https://image.tmdb.org/t/p/original/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg',
+    featured: true
+  },
+  {
+    _id: ObjectId("64c1014b8f9ba65b3989f452"),
+    title: 'Interstellar',
+    description: 'A team of explorers travel through a wormhole in space in an attempt to ensure humanity\'s survival.',
+    genre: [
+      {
+        name: 'Adventure',
+        description: 'A genre characterized by an exciting undertaking involving risk and physical danger.'
+      },
+      {
+        name: 'Drama',
+        description: 'A genre that focuses on realistic scenarios and emotionally-driven characters facing hardship and turmoil.'
+      },
+      {
+        name: 'Sci-Fi',
+        description: 'A genre that revolves around speculative scientific discoveries, advancements, or phenomena.'
+      }
+    ],
+    director: {
+      name: 'Christopher Nolan',
+      bio: 'English filmmaker known for making personal, distinctive films within the Hollywood mainstream.',
+      birth_year: 1970,
+      death_year: null
+    },
+    image_url: 'https://image.tmdb.org/t/p/original/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
+    featured: true
+  },
+  {
+    _id: ObjectId("64c1014b8f9ba65b3989f453"),
+    title: 'Star Wars: Episode V - The Empire Strikes Back',
+    description: 'After the Rebels are brutally overpowered by the Empire on the ice planet Hoth, Luke Skywalker begins Jedi training with Yoda, while his friends are pursued by Darth Vader.',
+    genre: [
+      {
+        name: 'Action',
+        description: 'A genre that often features physical exploits and a fast-paced plot.'
+      },
+      {
+        name: 'Adventure',
+        description: 'A genre characterized by an exciting undertaking involving risk and physical danger.'
+      },
+      {
+        name: 'Fantasy',
+        description: 'A genre that incorporates speculative and fictional elements such as magic, supernatural creatures, and fantastical worlds.'
+      }
+    ],
+    director: {
+      name: 'Irvin Kershner',
+      bio: 'American actor and director of film and television. He gained notice early in his career as a filmmaker for directing quirky, independent drama films, while his best-known work is arguably the multiple award-winning The Empire Strikes Back (1980).',
+      birth_year: 1923,
+      death_year: 2010
+    },
+    image_url: 'https://image.tmdb.org/t/p/original/7BuH8itoSrLExs2YZSsM01Qlci5.jpg',
+    featured: true
+  }  
+]
+)

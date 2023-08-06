@@ -1,79 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Movie API Documentation</title>
-  <link rel="stylesheet" type="text/css" href="../Style/styles.css">
-</head>
-<body>
-    <h1>Movie API</h1>
-    <h1>Movie API Documentation</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>Request</th>
-        <th>URL</th>
-        <th>Response</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>GET</td>
-        <td>/movies</td>
-        <td>Returns a list of all movies</td>
-      </tr>
-      <tr>
-        <td>GET</td>
-        <td>/movies/:title</td>
-        <td>Returns a single movie by title</td>
-      </tr>
-      <tr>
-        <td>GET</td>
-        <td>/genres/:name</td>
-        <td>Returns a list of movies in the specified genre</td>
-      </tr>
-      <tr>
-        <td>GET</td>
-        <td>/directors/:name</td>
-        <td>Returns the director's information by name</td>
-      </tr>
-      <tr>
-        <td>POST</td>
-        <td>/users</td>
-        <td>Adds a new user</td>
-      </tr>
-      <tr>
-        <td>PUT</td>
-        <td>/users/:username</td>
-        <td>Updates a user's information</td>
-      </tr>
-      <tr>
-        <td>POST</td>
-        <td>/users/:username/favorites/:movieTitle</td>
-        <td>Adds a movie to the user's favorites</td>
-      </tr>
-      <tr>
-        <td>DELETE</td>
-        <td>/users/:username/favorites/:movieTitle</td>
-        <td>Removes a movie from the user's favorites</td>
-      </tr>
-      <tr>
-        <td>DELETE</td>
-        <td>/users/:username</td>
-        <td>Deletes a user by username</td>
-      </tr>
-    </tbody>
-  </table>
-    <p>
-        The myFlix application is a movie API designed for movie enthusiasts who want to access information about movies, 
-        directors, and genres. The application will be hosted online and is responsive, so it can be used anywhere and on 
-        any device, providing all users with the same experience. Users can receive information on movies, directors, and 
-        genres to learn more about the movies they've watched or are interested in. Additionally, users can create a profile
-         to save data about their favorite movies. The API is developed with Node.js and Express, uses MongoDB for the database, 
-         and Mongoose to model the business logic. The API provides movie information in JSON format and includes features such as 
-         authentication, authorization, and data validation. MyFlix is tested with Postman and the source code is deployed 
-         on a publicly accessible platform like GitHub, while the API is deployed on Heroku.
-    </p>
-</body>
+<html>
+    <head>
+        <title>My Movie API Documentation</title>
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 15px;
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>My Movie API</h1>
+        <p>
+            Welcome to the documentation for My Movie API. This API provides access to a vast library of movie information, including movie titles, release dates, ratings, and more. Through various endpoints, users can retrieve, update, delete, and add new data to the movie database. As the API evolves, this documentation will be updated with new features and endpoints. Be sure to check back often for the latest updates.
+        </p>
+        <h2>API Endpoints</h2>
+        <table>
+            <tr>
+                <th>Request</th>
+                <th>URL</th>
+                <th>Data Sent</th>
+                <th>Response</th>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>/movies</td>
+                <td>N/A</td>
+                <td>Returns an array of all movies</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>/movies/:title</td>
+                <td>N/A</td>
+                <td>Returns data about a single movie by title, including description, genre, director, image URL, and whether it's featured or not</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>/genres/:name</td>
+                <td>N/A</td>
+                <td>Returns data about a genre, including its description</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>/directors/:name</td>
+                <td>N/A</td>
+                <td>Returns data about a director, including bio, birth year, and death year</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>/users</td>
+                <td>{ "Username": "example", "Password": "example", "Email": "example@example.com", "Birthday": "YYYY-MM-DD" }</td>
+                <td>Returns the created user object</td>
+            </tr>
+            <tr>
+                <td>PUT</td>
+                <td>/users/:username</td>
+                <td>{ "Username": "newExample", "Password": "newExample", "Email": "newExample@example.com", "Birthday": "YYYY-MM-DD" }</td>
+                <td>Returns the updated user object</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>/users/:username/movies/:movieId</td>
+                <td>N/A</td>
+                <td>Returns the user's updated list of favorite movies</td>
+            </tr>
+            <tr>
+                <td>DELETE</td>
+                <td>/users/:username/movies/:movieId</td>
+                <td>N/A</td>
+                <td>Returns the user's updated list of favorite movies after removal of a movie</td>
+            </tr>
+            <tr>
+                <td>DELETE</td>
+                <td>/users/:username</td>
+                <td>N/A</td>
+                <td>Returns a message confirming the deletion of the user</td>
+            </tr>
+        </table>
+    </body>
 </html>
