@@ -2,9 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { check, validationResult } = require('express-validator');
-
 const mongoose = require('mongoose');
 const Models = require('./models.js');
+const passport = require('passport');
+require('./passport'); // Assuming the passport file is in the same directory
+const auth = require('./auth');
 
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -23,12 +25,20 @@ db.once('open', function() {
 });
 
 const app = express();
+const router = express.Router();
 
+auth(app);
+
+app.use(passport.initialize());
+app.use('/', router);
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/movies', (req, res) => {
+// Authentication middleware for protected routes
+const authMiddleware = passport.authenticate('jwt', { session: false });
+
+app.get('/movies', authMiddleware, (req, res) => {
   Movies.find()
     .populate('genre')
     .then(movies => {
@@ -40,7 +50,7 @@ app.get('/movies', (req, res) => {
     });
 });
 
-app.get('/movies/:title', (req, res) => {
+app.get('/movies/:title', authMiddleware, (req, res) => {
   Movies.findOne({ title: { $regex: new RegExp("^" + req.params.title.toLowerCase(), "i") } })
     .populate('genre')
     .then(movie => {
@@ -52,7 +62,7 @@ app.get('/movies/:title', (req, res) => {
     });
 });
 
-app.get('/genres/:genreName', (req, res) => {
+app.get('/genres/:genreName', authMiddleware, (req, res) => {
   Genres.findOne({ 'name': { $regex: new RegExp("^" + req.params.genreName.toLowerCase(), "i") } })
     .then(genre => {
       if (genre) {
@@ -68,7 +78,7 @@ app.get('/genres/:genreName', (req, res) => {
 });
 
 
-app.get('/movies/director/:directorName', (req, res) => {
+app.get('/movies/director/:directorName', authMiddleware, (req, res) => {
   Movies.findOne({ 'director.name': { $regex: new RegExp(req.params.directorName, "i") } })
     .then(movie => {
       if (movie && movie.director) {
@@ -80,7 +90,7 @@ app.get('/movies/director/:directorName', (req, res) => {
           birth_year: movie.director.birth ? movie.director.birth.getFullYear() : null,
           death_year: movie.director.death ? movie.director.death.getFullYear() : null
         });
-      
+
       } else {
         res.status(404).send('No movie found by the director ' + req.params.directorName);
       }
@@ -91,12 +101,9 @@ app.get('/movies/director/:directorName', (req, res) => {
     });
 });
 
-
-
-
-
-app.get('/users', (req, res) => {
+app.get('/users', authMiddleware, (req, res) => {
   Users.find()
+    .select('-pasword')
     .then(users => {
       res.json(users);
     })
@@ -107,10 +114,14 @@ app.get('/users', (req, res) => {
 });
 
 app.post('/users', 
-  [
-    check('username').isAlphanumeric().isLength({ min: 3 }),
-    check('password').isLength({ min: 5 })
-  ], (req, res) => {
+   (req, res, next) => {
+       console.log(req.body);
+       next();
+   },
+   [
+       check('username').isAlphanumeric().isLength({ min: 3 }),
+       check('password').isLength({ min: 5 })
+   ], (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -140,19 +151,23 @@ app.post('/users',
       });
   });
 
-  app.put('/users/:username', (req, res) => {
+  app.put('/users/:username', authMiddleware, (req, res) => {
     const usernameFromParams = req.params.username.trim();
     const regex = new RegExp(`^${usernameFromParams}$`, 'i');
-  
+
+    if (usernameFromBody && usernameFromParams !== usernameFromBody) {
+      return res.status(400).send('Username in the parameter does not match the one in the request body');
+    }
     console.log('Updating user:', usernameFromParams); // Log for debugging
     console.log('Regex:', regex); // Log for debugging
-  
+
     Users.findOne({ username: regex }) // Test query
-      .then(user => {
+        .select('-password') // Exclude password field
+        .then(user => {
         if (!user) {
           return res.status(400).send(`User with username ${usernameFromParams} not found (Test Query).`);
         }
-  
+
         // Fields you want to update
         let updateObj = {
           username: req.body.username || user.username,
@@ -161,10 +176,10 @@ app.post('/users',
           birthday: req.body.birthday || user.birthday,
           favoriteMovies: req.body.favoriteMovies || user.favoriteMovies
         };
-  
+
         // Assign the updated fields to the user object
         Object.assign(user, updateObj);
-  
+
         // Save the updated user object
         user.save()
           .then(updatedUser => {
@@ -181,16 +196,16 @@ app.post('/users',
       });
   });
 
-  app.post('/users/:username/movies/:movieTitle', (req, res) => {
+  app.post('/users/:username/movies/:movieTitle', authMiddleware, (req, res) => {
     const username = req.params.username;
     const movieTitle = req.params.movieTitle;
-  
+
     Movies.findOne({ title: movieTitle })
       .then(movie => {
         if (!movie) {
           return res.status(404).send('Movie not found');
         }
-  
+
         return Users.findOneAndUpdate(
           { username: username },
           { $push: { favoriteMovies: movie._id } },
@@ -201,7 +216,7 @@ app.post('/users',
         if (!updatedUser) {
           return res.status(404).send('User not found');
         }
-  
+
         res.json(updatedUser);
       })
       .catch(err => {
@@ -209,18 +224,18 @@ app.post('/users',
         res.status(500).send('Error: ' + err);
       });
   });
-  
 
-  app.delete('/users/:username/movies/:movieTitle', (req, res) => {
+
+  app.delete('/users/:username/movies/:movieTitle', authMiddleware, (req, res) => {
     const username = req.params.username;
     const movieTitle = req.params.movieTitle;
-  
+
     Movies.findOne({ title: movieTitle })
       .then(movie => {
         if (!movie) {
           return res.status(404).send('Movie not found');
         }
-  
+
         return Users.findOneAndUpdate(
           { username: username },
           { $pull: { favoriteMovies: movie._id } },
@@ -231,16 +246,16 @@ app.post('/users',
         if (!updatedUser) {
           return res.status(404).send('User not found');
         }
-  
+
         res.json(updatedUser);
       })
       .catch(err => {
         console.error(err);
         res.status(500).send('Error: ' + err);
       });
-  });  
+  });
 
-app.delete('/users/:username', (req, res) => {
+app.delete('/users/:username', authMiddleware, (req, res) => {
     Users.findOneAndRemove({ username: req.params.username })
       .then(user => {
         if (!user) {
