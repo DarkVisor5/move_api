@@ -1,42 +1,55 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const { check, validationResult } = require('express-validator');
-const mongoose = require('mongoose');
-const Models = require('./models.js');
-const passport = require('passport');
-require('./passport'); // Assuming the passport file is in the same directory
-const auth = require('./auth');
-
-const Movies = Models.Movie;
-const Users = Models.User;
-const Genres = Models.Genre;
-
-mongoose.connect('mongodb://127.0.0.1/movies', { useNewUrlParser: true, useUnifiedTopology: true})
-  .then(() => console.log('Database Connected Successfully'))
-  .catch(err => console.error('Database Connection Failed', err));
+  const express = require('express');
+  const bodyParser = require('body-parser');
+  const cors = require('cors');
+  const { check, validationResult } = require('express-validator');
+  const mongoose = require('mongoose');
+  const Models = require('./models.js');
+  const passport = require('passport');
+  require('./passport');
+  const auth = require('./auth');
+  const bcrypt = require('bcrypt');
+  const jwt = require('jsonwebtoken');
 
 
-const db = mongoose.connection;
+  const Movies = Models.Movie;
+  const Users = Models.User;
+  const Genres = Models.Genre;
 
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log('We are connected to the database');
-});
+  mongoose.connect('mongodb://127.0.0.1/movies', { useNewUrlParser: true, useUnifiedTopology: true})
+    .then(() => console.log('Database Connected Successfully'))
+    .catch(err => console.error('Database Connection Failed', err));
 
-const app = express();
-const router = express.Router();
 
-auth(app);
+  const db = mongoose.connection;
 
-app.use(passport.initialize());
-app.use('/', router);
-app.use(express.static('public'));
-app.use(bodyParser.json());
-app.use(cors());
+  db.on('error', console.error.bind(console, 'connection error:'));
+  db.once('open', function() {
+    console.log('We are connected to the database');
+  });
 
-// Authentication middleware for protected routes
-const authMiddleware = passport.authenticate('jwt', { session: false });
+  const app = express();
+
+  //Middleware
+  app.use(cors());
+  app.use(express.json());
+
+  // Middleware per loggare le richieste
+  app.use((req, res, next) => {
+    console.log('Request:', req.method, req.path);
+    console.log('Headers:', req.headers);
+    console.log('Body:', req.body);
+    next();
+  });
+
+  app.use(passport.initialize());
+  auth(app);
+
+  const router = express.Router();
+  app.use('/', router);
+  app.use(express.static('public'));
+
+  // Authentication middleware for protected routes
+  const authMiddleware = passport.authenticate('jwt', { session: false });
 
 app.get('/movies', authMiddleware, (req, res) => {
   Movies.find()
@@ -103,7 +116,7 @@ app.get('/movies/director/:directorName', authMiddleware, (req, res) => {
 
 app.get('/users', authMiddleware, (req, res) => {
   Users.find()
-    .select('-pasword')
+    .select('-password')
     .then(users => {
       res.json(users);
     })
@@ -113,46 +126,77 @@ app.get('/users', authMiddleware, (req, res) => {
     });
 });
 
-app.post('/users', 
-   (req, res, next) => {
-       console.log(req.body);
-       next();
-   },
-   [
-       check('username').isAlphanumeric().isLength({ min: 3 }),
-       check('password').isLength({ min: 5 })
-   ], (req, res) => {
-    const errors = validationResult(req);
+app.post('/users',
+  // Validation logic here for request
+  // you can either use a chain of methods like .not().isEmpty()
+  // which means "opposite of isEmpty" in plain English "is not empty"
+  // or use .isLength({min: 5}) which means
+  // minimum value of 5 characters are only allowed
+  [
+    check('username', 'Username is required').isLength({min: 5}),
+    check('username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('password', 'Password is required').not().isEmpty(),
+    check('email', 'Email does not appear to be valid').isEmail()
+  ], async (req, res) => {
+    // check the validation object for errors
+    let errors = validationResult(req);
+
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(422).json({ errors: errors.array() });
     }
 
-    Users.findOne({ username: req.body.username })
-      .then(user => {
+    let hashedPassword = Users.hashPassword(req.body.password);
+    await Users.findOne({ username: req.body.username }) // Search to see if a user with the requested username already exists
+      .then((user) => {
         if (user) {
+          // If the user is found, send a response that it already exists
           return res.status(400).send(req.body.username + ' already exists');
         } else {
-          Users.create({
-            username: req.body.username,
-            password: req.body.password,
-            email: req.body.email,
-            birthday: req.body.birthday
-          })
-          .then(user => { res.status(201).json(user) })
-          .catch(err => {
-            console.error(err);
-            res.status(500).send('Error: ' + err);
-          });
+          Users
+            .create({
+              username: req.body.username,
+              password: hashedPassword,
+              email: req.body.email,
+              birthday: req.body.birthday
+            })
+            .then((user) => {
+              // Create a copy of the user object without the password
+              const userWithoutPassword = { ...user._doc };
+              delete userWithoutPassword.password;
+              // Send the modified object
+              res.status(201).json(userWithoutPassword);
+            })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).send('Error: ' + error);
+            });
         }
       })
-      .catch(err => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
       });
   });
 
-  app.put('/users/:username', authMiddleware, (req, res) => {
+
+  app.put('/users/:username',
+  // Add validation checks here
+  [
+    check('username', 'Username must be at least 5 characters long').isLength({min: 5}),
+    check('username', 'Username should contain only alphanumeric characters').isAlphanumeric(),
+    check('password', 'Password must not be empty').optional().not().isEmpty(),
+    check('email', 'Email must be valid').optional().isEmail(),
+    check('birthday', 'Birthday must be a valid date').optional().isDate()
+  ],
+  authMiddleware,
+  (req, res) => {
+    // Handle validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
     const usernameFromParams = req.params.username.trim();
+    const usernameFromBody = req.body.username;
     const regex = new RegExp(`^${usernameFromParams}$`, 'i');
 
     if (usernameFromBody && usernameFromParams !== usernameFromBody) {
@@ -177,13 +221,20 @@ app.post('/users',
           favoriteMovies: req.body.favoriteMovies || user.favoriteMovies
         };
 
+        // If a new password is provided, hash it
+        if (req.body.password) {
+          updateObj.password = Users.hashPassword(req.body.password);
+        }
+
         // Assign the updated fields to the user object
         Object.assign(user, updateObj);
 
         // Save the updated user object
         user.save()
           .then(updatedUser => {
-            res.json(updatedUser);
+            const userWithoutPassword = { ...updatedUser._doc};
+            delete userWithoutPassword.password;
+            res.json(userWithoutPassword);
           })
           .catch(err => {
             console.error(err);
@@ -225,6 +276,28 @@ app.post('/users',
       });
   });
 
+  app.post('/login', (req, res) => {
+    Users.findOne({ username: req.body.username })
+      .then((user) => {
+        if (!user) {
+          return res.status(400).send('Username not found');
+        }
+  
+        if (!bcrypt.compareSync(req.body.password, user.password)) {
+          return res.status(400).send('Password is incorrect');
+        }
+  
+        const payload = { username: user.username };
+        const token = jwt.sign(payload, 'Segreto', { expiresIn: '1h' });
+  
+        res.json({ user: user.username, token: token });
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+  });
+  
 
   app.delete('/users/:username/movies/:movieTitle', authMiddleware, (req, res) => {
     const username = req.params.username;
