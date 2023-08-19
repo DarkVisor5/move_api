@@ -276,28 +276,6 @@ app.post('/users',
         res.status(500).send('Error: ' + err);
       });
   });
-
-  app.post('/login', (req, res) => {
-    Users.findOne({ username: req.body.username })
-      .then((user) => {
-        if (!user) {
-          return res.status(400).send('Username not found');
-        }
-  
-        if (!bcrypt.compareSync(req.body.password, user.password)) {
-          return res.status(400).send('Password is incorrect');
-        }
-  
-        const payload = { username: user.username };
-        const token = jwt.sign(payload, 'Segreto', { expiresIn: '1h' });
-  
-        res.json({ user: user.username, token: token });
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      });
-  });
   
 
   app.delete('/users/:username/movies/:movieTitle', authMiddleware, (req, res) => {
