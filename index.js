@@ -15,7 +15,7 @@
   const Users = Models.User;
   const Genres = Models.Genre;
 
-  mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+  mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Database Connected Successfully'))
     .catch(err => console.error('Database Connection Failed', err));
 
