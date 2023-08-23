@@ -7,7 +7,7 @@ Clone the repository.
 
 Run npm install to install the dependencies.
 
-Start MongoDB service.
+Start MongoDB service like it was deployed in my cluster on: https://cloud.mongodb.com/v2/64db7c2eca6b6802df3614af#/metrics/replicaSet/64db7cbc72739243f97a132a/explorer/movies/genres/find
 
 Run npm start to start the application.
 
