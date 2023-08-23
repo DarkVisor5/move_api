@@ -1,5 +1,7 @@
 **Movie Database API**
 
+
+
 **Installation and Setup**
 
 Clone the repository.
@@ -14,7 +16,11 @@ Environment Variables
 
 PORT (optional) - Port to run the server on. Default is 8080.
 
+
+
 **API Endpoints:**
+
+
 
 **User Routes:**
 
@@ -26,15 +32,21 @@ Update User: PUT /users/:username
 
 Delete User: DELETE /users/:username
 
+
+
 **Movie Routes:**
 
 Get All Movies: GET /movies
 
 Get Movie By Title: GET /movies/:title
 
+
+
 **Genre Routes:**
 
 Get Genre By Name: GET /genres/:genreName
+
+
 
 **Usage**
 
