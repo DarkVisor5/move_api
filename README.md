@@ -25,12 +25,18 @@ Error Handling: Proper error responses are sent to the client, making it easier 
 
 **Tech Stack**
 
-Node.js for the runtime environment.
+Node.js for the runtime environment. 
+
 Express.js for building the RESTful API.
+
 MongoDB as the database.
+
 Mongoose for object data modeling.
+
 Passport.js for user authentication.
+
 bcrypt for password hashing.
+
 JWT for generating and verifying JSON Web Tokens.
 
 
