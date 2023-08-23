@@ -11,11 +11,7 @@ Start MongoDB service.
 
 Run npm start to start the application.
 
-Environment Variables
-
-PORT (optional) - Port to run the server on. Default is 8080.
-
-Features
+**Features**
 
 User Authentication: Secure user authentication is implemented using JWT tokens.
 
@@ -27,7 +23,7 @@ Logging: Detailed logging is enabled for debugging purposes.
 
 Error Handling: Proper error responses are sent to the client, making it easier to trace issues.
 
-Tech Stack
+**Tech Stack**
 
 Node.js for the runtime environment.
 Express.js for building the RESTful API.
