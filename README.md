@@ -1,7 +1,6 @@
 **Movie Database API**
 
 
-
 **Installation and Setup**
 
 Clone the repository.
@@ -16,10 +15,31 @@ Environment Variables
 
 PORT (optional) - Port to run the server on. Default is 8080.
 
+Features
+
+User Authentication: Secure user authentication is implemented using JWT tokens.
+
+Data Validation: The project makes use of express-validator to ensure that only valid data is saved to the database.
+
+Data Relations: Movies are linked with genres and directors, allowing for complex queries.
+
+Logging: Detailed logging is enabled for debugging purposes.
+
+Error Handling: Proper error responses are sent to the client, making it easier to trace issues.
+
+Tech Stack
+
+Node.js for the runtime environment.
+Express.js for building the RESTful API.
+MongoDB as the database.
+Mongoose for object data modeling.
+Passport.js for user authentication.
+bcrypt for password hashing.
+JWT for generating and verifying JSON Web Tokens.
+
 
 
 **API Endpoints:**
-
 
 
 **User Routes:**
@@ -33,7 +53,6 @@ Update User: PUT /users/:username
 Delete User: DELETE /users/:username
 
 
-
 **Movie Routes:**
 
 Get All Movies: GET /movies
@@ -41,11 +60,9 @@ Get All Movies: GET /movies
 Get Movie By Title: GET /movies/:title
 
 
-
 **Genre Routes:**
 
 Get Genre By Name: GET /genres/:genreName
-
 
 
 **Usage**
