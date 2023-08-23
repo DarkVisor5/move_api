@@ -64,7 +64,9 @@ Get Genre By Name: GET /genres/:genreName
 **Usage**
 
 All routes except user creation require authentication.
-Contributing
+
+**Contributing**
+
 Feel free to fork the repository and submit pull requests.
 
 **Contact**
