@@ -52,7 +52,7 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
     const authMiddleware = passport.authenticate('jwt', { session: false });
   
     //app.get('/movies', authMiddleware, (req, res) => {
-    app.get('/movies', (req, res) => {
+    app.get('/movies',authMiddleware, (req, res) => {
       movies.find()
         .populate('genre')
         .then(movies => {
