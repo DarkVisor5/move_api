@@ -263,7 +263,7 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
       const username = req.params.username;
       const movieTitle = req.params.movieTitle;
   
-      Movies.findOne({ title: movieTitle })
+      movies.findOne({ title: movieTitle })
         .then(movie => {
           if (!movie) {
             return res.status(404).send('Movie not found');
@@ -293,7 +293,7 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
       const username = req.params.username;
       const movieTitle = req.params.movieTitle;
   
-      Movies.findOne({ title: movieTitle })
+      movies.findOne({ title: movieTitle })
         .then(movie => {
           if (!movie) {
             return res.status(404).send('Movie not found');
