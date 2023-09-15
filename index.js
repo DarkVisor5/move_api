@@ -93,7 +93,7 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
   
   
   app.get('/movies/director/:directorName', authMiddleware, (req, res) => {
-    Movies.findOne({ 'director.name': { $regex: new RegExp(req.params.directorName, "i") } })
+    movies.findOne({ 'director.name': { $regex: new RegExp(req.params.directorName, "i") } })
       .then(movie => {
         if (movie && movie.director) {
           console.log('Birth:', movie.director.birth); // Log the birth date
