@@ -11,9 +11,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 
-const movies = Models.movie;
+const Movies = Models.Movie;
 const Users = Models.User;
-const Genres = Models.Genre;
+const Genre = Models.Genre;
 
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('Database Connected Successfully'))
@@ -53,7 +53,7 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
   
     //app.get('/movies', authMiddleware, (req, res) => {
     app.get('/movies',authMiddleware, (req, res) => {
-      movies.find()
+      Movies.find()
         .populate('genre')
         .then(movies => {
           res.json(movies)
@@ -65,8 +65,8 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
     });
   
   app.get('/movies/:title', authMiddleware, (req, res) => {
-    movies.findOne({ title: { $regex: new RegExp("^" + req.params.title.toLowerCase(), "i") } })
-      .populate('genre')
+    Movies.findOne({ title: { $regex: new RegExp("^" + req.params.title.toLowerCase(), "i") } })
+      .populate('Genre')
       .then(movie => {
           res.json(movie);
       })
@@ -77,7 +77,7 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
   });
   
   app.get('/genres/:genreName', authMiddleware, (req, res) => {
-    Genres.findOne({ 'name': { $regex: new RegExp("^" + req.params.genreName.toLowerCase(), "i") } })
+    Genre.findOne({ 'name': { $regex: new RegExp("^" + req.params.genreName.toLowerCase(), "i") } })
       .then(genre => {
         if (genre) {
           res.json(genre);
@@ -91,9 +91,8 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
       });
   });
   
-  
   app.get('/movies/director/:directorName', authMiddleware, (req, res) => {
-    movies.findOne({ 'director.name': { $regex: new RegExp(req.params.directorName, "i") } })
+    Movies.findOne({ 'director.name': { $regex: new RegExp(req.params.directorName, "i") } })
       .then(movie => {
         if (movie && movie.director) {
           console.log('Birth:', movie.director.birth); // Log the birth date
@@ -263,7 +262,7 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
       const username = req.params.username;
       const movieTitle = req.params.movieTitle;
   
-      movies.findOne({ title: movieTitle })
+      Movies.findOne({ title: movieTitle })
         .then(movie => {
           if (!movie) {
             return res.status(404).send('Movie not found');
@@ -293,7 +292,7 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
       const username = req.params.username;
       const movieTitle = req.params.movieTitle;
   
-      movies.findOne({ title: movieTitle })
+      Movies.findOne({ title: movieTitle })
         .then(movie => {
           if (!movie) {
             return res.status(404).send('Movie not found');

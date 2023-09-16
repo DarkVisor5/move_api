@@ -1,17 +1,17 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-let genreModelSchema = mongoose.Schema({
+const GenreSchema = mongoose.Schema({
     name: {type: String, required: true},
     description: {type: String, required: true}
 });
 
-let GenreModel = mongoose.model('Genre', genreModelSchema);
+const Genre = mongoose.model('Genre', GenreSchema, 'genres');
 
-let movieSchema = mongoose.Schema({
+const MovieSchema = mongoose.Schema({
     title: {type: String, required: true},
     description: {type: String, required: true},
-    genre: [{type: mongoose.Schema.Types.ObjectId, ref: 'Genre'}], 
+    genre: [{type: mongoose.Schema.Types.ObjectId, ref: 'Genre'}],
     director: {
         name: String,
         bio: String,
@@ -22,23 +22,24 @@ let movieSchema = mongoose.Schema({
     featured: Boolean
 });
 
-let userSchema = mongoose.Schema({
+const Movie = mongoose.model('Movie', MovieSchema, 'movies');
+
+const UserSchema = mongoose.Schema({
     username: {type: String, required: true},
     password: {type: String, required: true},
     email: {type: String, required: true},
     birthday: Date,
-    favoriteMovies: [{type: mongoose.Schema.Types.ObjectId, ref: 'movie'}]
+    favoriteMovies: [{type: mongoose.Schema.Types.ObjectId, ref: 'Movie'}]
 });
 
-userSchema.statics.hashPassword = (password) =>{
-    return bcrypt.hashSync(password,10);
+UserSchema.statics.hashPassword = (password) => {
+    return bcrypt.hashSync(password, 10);
 };
 
-userSchema.methods.validatePassword = function(password) {
-    return bcrypt.compareSync(password,this.password);
+UserSchema.methods.validatePassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
 };
 
-let movie = mongoose.model('movie', movieSchema);
-let User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', UserSchema, 'users');
 
-module.exports = { movie, User, Genre: GenreModel };
+module.exports = { Movie, User, Genre };
