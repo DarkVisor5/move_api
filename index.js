@@ -275,12 +275,12 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
             return res.status(404).send('User not found');
           }
     
-          if (user.favoriteMovies.includes(movie._id)) {
+          if (user.favoriteMovies.includes(Movies._id)) {
             return res.status(400).send('Movie already in favorites');
           }
           
           console.log('Adding movie to favorites, as it was not already in the list'); 
-          
+
           return Users.findOneAndUpdate(
             { username: username },
             { $push: { favoriteMovies: movie._id } },
