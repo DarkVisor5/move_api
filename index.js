@@ -258,17 +258,15 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
         });
     });
   
-    app.post('/users/:username/movies/:movieTitle', authMiddleware, (req, res) => {
+    app.post('/users/:username/movies/:movieId', authMiddleware, (req, res) => {
       const username = req.params.username;
-      const movieTitle = req.params.movieTitle;
-      let foundMovieTitle; // Declare it here to capture the title
-    
-      Movies.findOne({ title: movieTitle })
+      const movieId = req.params.movieId; // Usiamo l'ID qui
+      
+      Movies.findById(movieId) // Trova il film usando l'ID
         .then(movie => {
           if (!movie) {
             return res.status(404).send('Movie not found');
           }
-          foundMovieTitle = movie.title; // Capture the title
           return Users.findOne({ username: username });
         })
         .then(user => {
@@ -276,13 +274,13 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
             return res.status(404).send('User not found');
           }
     
-          if (user.favoriteMovies.includes(foundMovieTitle)) {
+          if (user.favoriteMovies.includes(movieId)) { // Controlla l'ID qui
             return res.status(400).send('Movie already in favorites');
           }
     
           return Users.findOneAndUpdate(
             { username: username },
-            { $push: { favoriteMovies: foundMovieTitle } }, // Use the captured title here
+            { $push: { favoriteMovies: movieId } }, // Aggiungi l'ID qui
             { new: true }
           );
         })
@@ -295,21 +293,21 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
           console.error(err);
           res.status(500).send('Error: ' + err);
         });
-    });    
+    });
     
-    app.delete('/users/:username/movies/:movieTitle', authMiddleware, (req, res) => {
+    app.delete('/users/:username/movies/:movieId', authMiddleware, (req, res) => {
       const username = req.params.username;
-      const movieTitle = req.params.movieTitle;
-  
-      Movies.findOne({ title: movieTitle })
+      const movieId = req.params.movieId; // Usiamo l'ID qui
+    
+      Movies.findById(movieId) // Trova il film usando l'ID
         .then(movie => {
           if (!movie) {
             return res.status(404).send('Movie not found');
           }
-  
+    
           return Users.findOneAndUpdate(
             { username: username },
-            { $pull: { favoriteMovies: movie._id } },
+            { $pull: { favoriteMovies: movieId } }, // Rimuovi l'ID qui
             { new: true }
           );
         })
@@ -317,7 +315,7 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
           if (!updatedUser) {
             return res.status(404).send('User not found');
           }
-  
+    
           res.json(updatedUser);
         })
         .catch(err => {
@@ -325,6 +323,7 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
           res.status(500).send('Error: ' + err);
         });
     });
+    
   
   app.delete('/users/:username', authMiddleware, (req, res) => {
       Users.findOneAndRemove({ username: req.params.username })
