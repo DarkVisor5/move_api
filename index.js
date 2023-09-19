@@ -54,7 +54,7 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
     //app.get('/movies', authMiddleware, (req, res) => {
     app.get('/movies',authMiddleware, (req, res) => {
       Movies.find()
-        .populate('genre')
+        .populate('Genre')
         .then(movies => {
           res.json(movies)
         })
