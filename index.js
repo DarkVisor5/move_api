@@ -54,7 +54,7 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
     //app.get('/movies', authMiddleware, (req, res) => {
     app.get('/movies',authMiddleware, (req, res) => {
       Movies.find()
-        .populate('Genre')
+        .populate('genre')
         .then(movies => {
           res.json(movies)
         })
@@ -66,7 +66,7 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
   
   app.get('/movies/:title', authMiddleware, (req, res) => {
     Movies.findOne({ title: { $regex: new RegExp("^" + req.params.title.toLowerCase(), "i") } })
-      .populate('Genre')
+      .populate('genre')
       .then(movie => {
           res.json(movie);
       })
