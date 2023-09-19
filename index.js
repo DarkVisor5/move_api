@@ -283,7 +283,7 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
 
           return Users.findOneAndUpdate(
             { username: username },
-            { $push: { favoriteMovies: movie._id } },
+            { $push: { favoriteMovies: Movies._id } },
             { new: true }
           );
         })
