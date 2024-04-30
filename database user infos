@@ -1,0 +1,38 @@
+db.users.insertMany([
+  {
+    username: 'user1',
+    password: 'password1',
+    email: 'user1@email.com',
+    birthday: new Date("1985-02-19"),
+    favorites: [ObjectId("64c100c58f9ba65b3989f44a"), ObjectId("64c0fe388f9ba65b3989f441")]
+  },
+  {
+    username: 'user2',
+    password: 'password2',
+    email: 'user2@mail.com',
+    birthday: new Date("1990-05-25"),
+    favorites: [ObjectId("64c100c58f9ba65b3989f44c"), ObjectId("64c100c58f9ba65b3989f449")]
+  },
+  {
+    username: 'user3',
+    password: 'password3',
+    email: 'user3@email.com',
+    birthday: new Date("1921-02-23"),
+    favorites: [ObjectId("64c100c58f9ba65b3989f448"), ObjectId("64c100c58f9ba65b3989f44d")]
+  },
+  {
+    username: 'user4',
+    password: 'password4',
+    email: 'user2@mail.com',
+    birthday: new Date("1997-08-25"),
+    favorites: [ObjectId("64c1006a8f9ba65b3989f447"), ObjectId("64c100c58f9ba65b3989f449")]
+  },
+  {
+    username: 'user5',
+    password: 'password5',
+    email: 'user2@mail.com',
+    birthday: new Date("2010-05-29"),
+    favorites: [ObjectId("64c100c58f9ba65b3989f44d"), ObjectId("64c100c58f9ba65b3989f449")]
+  },
+  
+])

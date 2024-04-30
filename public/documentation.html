@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Movie API Documentation</title>
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 15px;
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>My Movie API</h1>
+        <p>
+            Welcome to the documentation for My Movie API. This API provides access to a vast library of movie information, including movie titles, release dates, ratings, and more. Through various endpoints, users can retrieve, update, delete, and add new data to the movie database. As the API evolves, this documentation will be updated with new features and endpoints. Be sure to check back often for the latest updates.
+        </p>
+        <h2>API Endpoints</h2>
+        <table>
+            <tr>
+                <th>Request</th>
+                <th>URL</th>
+                <th>Data Sent</th>
+                <th>Response</th>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>/movies</td>
+                <td>N/A</td>
+                <td>Returns an array of all movies</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>/movies/:title</td>
+                <td>N/A</td>
+                <td>Returns data about a single movie by title, including description, genre, director, image URL, and whether it's featured or not</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>/genres/:name</td>
+                <td>N/A</td>
+                <td>Returns data about a genre, including its description</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>/directors/:name</td>
+                <td>N/A</td>
+                <td>Returns data about a director, including bio, birth year, and death year</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>/users</td>
+                <td>{ "Username": "example", "Password": "example", "Email": "example@example.com", "Birthday": "YYYY-MM-DD" }</td>
+                <td>Returns the created user object</td>
+            </tr>
+            <tr>
+                <td>PUT</td>
+                <td>/users/:username</td>
+                <td>{ "Username": "newExample", "Password": "newExample", "Email": "newExample@example.com", "Birthday": "YYYY-MM-DD" }</td>
+                <td>Returns the updated user object</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>/users/:username/movies/:movieId</td>
+                <td>N/A</td>
+                <td>Returns the user's updated list of favorite movies</td>
+            </tr>
+            <tr>
+                <td>DELETE</td>
+                <td>/users/:username/movies/:movieId</td>
+                <td>N/A</td>
+                <td>Returns the user's updated list of favorite movies after removal of a movie</td>
+            </tr>
+            <tr>
+                <td>DELETE</td>
+                <td>/users/:username</td>
+                <td>N/A</td>
+                <td>Returns a message confirming the deletion of the user</td>
+            </tr>
+        </table>
+    </body>
+</html>

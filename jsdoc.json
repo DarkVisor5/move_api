@@ -1,0 +1,16 @@
+{
+    "source": {
+      "include": ["."],
+      "exclude": ["node_modules"],
+      "includePattern": ".+\\.js(doc|x)?$",
+      "excludePattern": "(^|\\/|\\\\)_"
+    },
+    "plugins": [],
+    "recurseDepth": 10,
+    "opts": {
+      "destination": "./out/",
+      "recurse": true,
+      "template": "templates/default"
+    }
+  }
+  
